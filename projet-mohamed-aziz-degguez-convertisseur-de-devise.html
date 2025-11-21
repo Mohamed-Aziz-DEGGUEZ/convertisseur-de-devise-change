@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Convertisseur de Devises</title>
+</head>
+
+
+        <style>
+        :root {
+            --bleu-fonce: #0a2a4c;
+            --orange-princ: #ff6600;
+            --fond-clair: #f0f4f8;
+            --texte-clair: #ffffff;
+            --texte-sombre: #333;
+            --bordure-clair: #ddd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--fond-clair);
+            color: var(--texte-sombre);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--bleu-fonce);
+            color: var(--texte-clair);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3.5rem;
+        }
+        
+        header h4 {
+            font-size: 1rem;
+            position: relative;
+            top: -15px;
+        }
+        .bloc-hero { 
+            background: linear-gradient(135deg, var(--bleu-fonce) 20%, var(--orange-princ) 100%);
+            color: var(--texte-clair);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .contenu-hero h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contenu-hero p { 
+            font-size: 1.1rem;
+        }
+
+
+        main {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .carte {
+            background-color: var(--texte-clair);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--bordure-clair);
+        }
+
+        h2.titre-section { 
+            color: var(--bleu-fonce);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        #section-conversion form {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 1.5rem;
+            align-items: flex-end;
+        }
+        @media (min-width: 768px) {
+            #section-conversion form {
+                grid-template-columns: 2fr 2fr 1fr 2fr;
+            }
+        }
+
+        .champ-form { 
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--bleu-fonce);
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--bordure-clair);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .btn { 
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-principal { 
+            background-color: var(--orange-princ);
+            color: var(--texte-clair);
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        .btn-principal:hover {
+            background-color: #ff8533; 
+        }
+        
+        #btn-inverser {
+             background-color: var(--texte-clair);
+             color: #007bff;
+             border: 1px solid var(--bordure-clair);
+             font-size: 1.5rem;
+             padding: 0.5rem;
+        }
+
+        #affichage-resultat {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #e6f2ff;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--bleu-fonce);
+        } 
+        .conteneur-tableau { 
+            overflow-x: auto;
+        }
+
+        #section-taux table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        #section-taux th,
+        #section-taux td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--bordure-clair);
+        }
+
+        #section-taux thead th {
+            background-color: #e6f2ff;
+            color: var(--bleu-fonce);
+        }
+        footer {
+            background-color: var(--bleu-fonce);
+            color: var(--texte-clair);
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .contenu-pied h3 { 
+            margin-bottom: 1rem;
+        }
+
+        .contenu-pied a { 
+            color: var(--orange-princ);
+            text-decoration: none;
+        }
+    </style>
+
+    <body>
+    <header>
+        <div>
+            <h1>sarf</h1>
+            <h4>le change près de chez vous</h4>
+        </div>
+        <div id="bloc-devise-base">
+            <label for="selecteur-devise-base">Devise de base:</label>
+            <select id="selecteur-devise-base"></select>
+        </div>
+    </header>
+    <section>
+        <div>
+            <h2>Votre Partenaire de Change de Confiance</h2>
+            <p>Taux compétitifs et service instantané pour tous vos besoins en devises.</p>
+        </div>
+    </section>
+
+    <main>
+        <section id="section-conversion">
+            <h2>Convertir des Devises</h2>
+            <form id="form-conversion">
+                <div>
+                    <label for="montant">Montant</label>
+                    <input type="number" id="montant" value="100" min="0" step="0.01">
+                </div>
+
+                <div>
+                    <label for="devise-source">Devise Source</label>
+                    <select id="devise-source"></select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <button type="button" id="btn-inverser" aria-label="Inverser les devises">&leftrightarrow;</button>
+                </div>
+                <div>
+                    <label for="devise-cible">Devise Destination</label>
+                    <select id="devise-cible"></select>
+                </div>
+
+                <button type="submit">Convertir</button>
+            </form>
+
+            <div id="affichage-resultat">
+                Saisissez un montant à convertir
+            </div>
+        </section>
+
+        <section id="section-taux">
+            <h2 id="titre-tableau-taux">Taux de Change</h2>
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Devise</th>
+                            <th>Prix d'Achat</th>
+                            <th>Taux International</th>
+                            <th>Prix de Vente</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corps-tableau-taux">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            <h3>Contactez-Nous</h3>
+            <p>SARF S.A</p>
+            <p>Siège social : Rue lac malaren, les berges du lac, Tunis</p>
+            <p>Email: <a href="mailto:service-client@SARF">service-client@SARF</a></p>
+            <p>Téléphone: +71 364 556</p>
+            <p>Accord du BCT n°0233/2022</p>
+        </div>
+    </footer>
+</body>
+</html>
