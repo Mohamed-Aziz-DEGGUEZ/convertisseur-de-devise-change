@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Convertisseur de Devises</title>
-</head>
-
-
-        <style>
+    <style>
         :root {
             --bleu-fonce: #0a2a4c;
+            --bleu-moyen: #007bff;
             --orange-princ: #ff6600;
+            --orange-survol: #ff8533;
             --fond-clair: #f0f4f8;
             --texte-clair: #ffffff;
             --texte-sombre: #333;
             --bordure-clair: #ddd;
-            --rayon-bordure: 6px; 
+            --ombre-legere: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --ombre-moyenne: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -25,92 +25,157 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--fond-clair);
             color: var(--texte-sombre);
             line-height: 1.6;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.08); 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
             background-color: var(--bleu-fonce);
             color: var(--texte-clair);
-            padding: 1rem 2rem;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--ombre-moyenne);
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
+        .titre-page {
+            position: relative;
+        }
+
         header h1 {
             margin: 0;
-            font-size: 3.5rem;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-transform: capitalize;
         }
-        
+
         header h4 {
-            font-size: 1rem;
+            margin-left: 0px;
+            font-size: 0.5rem;
+            letter-spacing: 1px;
             position: relative;
             top: -15px;
         }
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 2.5rem; 
-            }
+
+        #bloc-devise-base {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        section:first-of-type { 
-            background: linear-gradient(135deg, var(--bleu-fonce) 20%, var(--orange-princ) 100%);
+
+        #bloc-devise-base label {
+            font-size: 0.9rem;
+            font-weight: 500;
             color: var(--texte-clair);
-            padding: 3rem 1.5rem;
+        }
+
+        #selecteur-devise-base {
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--bordure-clair);
+            background-color: var(--texte-clair);
+            color: var(--texte-sombre);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .bloc-hero {
+            position: relative;
+            padding: 4rem 1.5rem;
             text-align: center;
+            color: var(--texte-clair);
+            overflow: hidden;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        section:first-of-type h2 { 
-            font-size: 2rem;
+        .bloc-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--bleu-fonce) 20%, var(--orange-princ) 100%);
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+            /* LIGNE MANQUANTE : transition: opacity 0.4s ease-out; */
+            z-index: 1;
+        }
+
+        .bloc-hero:hover::before {
+            opacity: 0.5;
+        }
+
+        .contenu-hero {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .contenu-hero h2 {
+            color: var(--texte-clair);
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
-        section:first-of-type p { 
-            font-size: 1.1rem;
+        .contenu-hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
         }
-
 
         main {
+            flex: 1;
             max-width: 900px;
             width: 100%;
             margin: 2rem auto;
             padding: 0 1rem;
         }
+
         .carte {
             background-color: var(--texte-clair);
-            border-radius: var(--rayon-bordure); 
+            border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            border: 1px solid var(--bordure-clair);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
-            transition: box-shadow 0.3s ease; 
-        }
-        .carte:hover {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+            box-shadow: var(--ombre-legere);
+            /* LIGNE MANQUANTE : overflow: hidden; */
         }
 
-        h2.titre-section { 
+        h2.titre-section {
             color: var(--bleu-fonce);
             margin-bottom: 1.5rem;
             text-align: center;
-            font-weight: 800;
+            font-size: 1.8rem;
         }
+
         #section-conversion form {
             display: grid;
-            grid-template-columns: 1fr; 
+            grid-template-columns: 1fr;
             gap: 1.5rem;
             align-items: flex-end;
         }
+
         @media (min-width: 768px) {
             #section-conversion form {
                 grid-template-columns: 2fr 2fr 1fr 2fr;
             }
         }
-        
-        #section-conversion form > div { 
+
+        .champ-form {
             display: flex;
             flex-direction: column;
         }
@@ -126,73 +191,73 @@
             width: 100%;
             padding: 0.75rem;
             border: 1px solid var(--bordure-clair);
-            border-radius: var(--rayon-bordure); 
+            border-radius: 4px;
             font-size: 1rem;
-            transition: border-color 0.2s, box-shadow 0.2s; 
+            background-color: #fcfcfc;
         }
 
         input[type="number"]:focus,
         select:focus {
-            border-color: var(--orange-princ);
-            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2); 
-            outline: none;
+            outline: 2px solid var(--orange-princ);
+            border-color: transparent;
         }
 
-        .btn { 
+        .btn {
             padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: var(--rayon-bordure); 
+            border-radius: 4px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        #form-conversion button[type="submit"] { 
+
+        .btn-principal {
             background-color: var(--orange-princ);
             color: var(--texte-clair);
             width: 100%;
             grid-column: 1 / -1;
-            box-shadow: 0 2px 5px rgba(255, 102, 0, 0.4); 
-            transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s; 
         }
 
-        #form-conversion button[type="submit"]:hover {
-            background-color: #ff8533; 
+        .btn-principal:hover {
+            background-color: var(--orange-survol);
+            /* LIGNE MANQUANTE : transform: translateY(-2px); */
         }
 
-        #form-conversion button[type="submit"]:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 3px rgba(255, 102, 0, 0.4); 
-        }
-        
         #btn-inverser {
-             background-color: var(--texte-clair);
-             color: var(--bleu-fonce); 
-             border: 1px solid var(--bordure-clair);
-             font-size: 1.5rem;
-             padding: 0.5rem;
-             border-radius: var(--rayon-bordure);
-             transition: background-color 0.2s;
-        }
-        #btn-inverser:hover {
-            background-color: var(--fond-clair); 
+            background-color: var(--texte-clair);
+            color: var(--bleu-moyen);
+            border: 1px solid var(--bordure-clair);
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            line-height: 1;
         }
 
+        #btn-inverser:hover {
+            background-color: #f4f4f4;
+            /* LIGNE MANQUANTE : transform: translateY(-2px); */
+            transition: background-color 0.3s ease, transform 0.4s ease;
+        }
 
         #affichage-resultat {
             margin-top: 1.5rem;
             padding: 1rem;
             background-color: #e6f2ff;
-            border-radius: var(--rayon-bordure); 
+            border-radius: 4px;
             text-align: center;
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--bleu-fonce);
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            min-height: 2.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
         }
 
-        .conteneur-tableau { 
+        /* CLASSE ET ANIMATION MANQUANTES : .chargement et @keyframes pulse */
+        
+        .conteneur-tableau {
             overflow-x: auto;
         }
 
@@ -208,39 +273,112 @@
             text-align: left;
             border-bottom: 1px solid var(--bordure-clair);
         }
-        #section-taux tbody tr:nth-child(even) { 
-            background-color: #f8f8f8;
-        }
 
         #section-taux thead th {
             background-color: #e6f2ff;
             color: var(--bleu-fonce);
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
+
+        #section-taux tbody tr:nth-child(even) {
+            background-color: #f9f9f8;
+        }
+
+        #section-taux td:nth-child(2) {
+            color: #d9534f;
+            font-weight: 500;
+        }
+
+        #section-taux td:nth-child(4) {
+            color: #5cb85c;
+            font-weight: 500;
+        }
+
         footer {
             background-color: var(--bleu-fonce);
             color: var(--texte-clair);
             padding: 2rem 1rem;
             margin-top: 2rem;
             text-align: center;
+            width: 100%;
         }
 
-        .contenu-pied h3 { 
+        .contenu-pied {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contenu-pied h3 {
+            color: var(--texte-clair);
             margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
 
-        .contenu-pied a { 
+        .contenu-pied p {
+            margin-bottom: 0.5rem;
+            color: #f0f4f8;
+            line-height: 1.5;
+        }
+
+        .contenu-pied a {
             color: var(--orange-princ);
-            text-decoration: none;=
-            transition: color 0.2s; 
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
-        .contenu-pied a:hover {
-            color: #ffffff;
-        }
-        </style>
 
-    <body>
+        .contenu-pied a:hover {
+            color: var(--orange-survol);
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* @KEYFRAMES PULSE MANQUANT */
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+                min-height: 110px;
+            }
+
+            .titre-page {
+                margin-bottom: 0.5rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            #bloc-devise-base {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            #selecteur-devise-base {
+                flex-grow: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
     <header>
-        <div>
+        <div class="titre-page">
             <h1>sarf</h1>
             <h4>le change près de chez vous</h4>
         </div>
@@ -249,36 +387,37 @@
             <select id="selecteur-devise-base"></select>
         </div>
     </header>
-    <section>
-        <div>
-            <h2>Votre Partenaire de Change de Confiance</h2>
-            <p>Taux compétitifs et service instantané pour tous vos besoins en devises.</p>
+
+    <section class="bloc-hero">
+        <div class="contenu-hero">
+            <h2 class="head-hero">Votre Partenaire de Change de Confiance</h2>
+            <p class="taux">Taux compétitifs et service instantané pour tous vos besoins en devises.</p>
         </div>
     </section>
 
     <main>
-        <section id="section-conversion" class="carte"> 
-            <h2 class="titre-section">Convertir des Devises</h2> 
+        <section id="section-conversion" class="carte">
+            <h2 class="titre-section">Convertir des Devises</h2>
             <form id="form-conversion">
-                <div>
+                <div class="champ-form">
                     <label for="montant">Montant</label>
                     <input type="number" id="montant" value="100" min="0" step="0.01">
                 </div>
 
-                <div>
+                <div class="champ-form">
                     <label for="devise-source">Devise Source</label>
                     <select id="devise-source"></select>
                 </div>
-                <div>
+                <div class="champ-form">
                     <label>&nbsp;</label>
-                    <button type="button" id="btn-inverser" aria-label="Inverser les devises">&leftrightarrow;</button>
+                    <button type="button" id="btn-inverser" class="btn" aria-label="Inverser les devises">&leftrightarrow;</button>
                 </div>
-                <div>
+                <div class="champ-form">
                     <label for="devise-cible">Devise Destination</label>
                     <select id="devise-cible"></select>
                 </div>
 
-                <button type="submit">Convertir</button>
+                <button type="submit" class="btn btn-principal">Convertir</button>
             </form>
 
             <div id="affichage-resultat">
@@ -286,8 +425,8 @@
             </div>
         </section>
 
-        <section id="section-taux" class="carte conteneur-tableau">
-            <h2 id="titre-tableau-taux" class="titre-section">Taux de Change</h2> 
+        <section id="section-taux" class="carte">
+            <h2 id="titre-tableau-taux" class="titre-section">Taux de Change</h2>
 
             <div class="conteneur-tableau">
                 <table>
@@ -300,14 +439,14 @@
                         </tr>
                     </thead>
                     <tbody id="corps-tableau-taux">
-                    </tbody >
-                </table >
-            </div >
-        </section >
-    </main >
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <div class="contenu-pied"> 
+        <div class="contenu-pied">
             <h3>Contactez-Nous</h3>
             <p>SARF S.A</p>
             <p>Siège social : Rue lac malaren, les berges du lac, Tunis</p>
@@ -316,5 +455,4 @@
             <p>Accord du BCT n°0233/2022</p>
         </div>
     </footer>
-</body>
 </html>
