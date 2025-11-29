@@ -112,11 +112,7 @@
             background-size: cover;
             background-position: center;
             opacity: 1;
-<<<<<<< HEAD
             transition: opacity 0.4s ease-out;
-=======
-            /* LIGNE MANQUANTE : transition: opacity 0.4s ease-out; */
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
             z-index: 1;
         }
 
@@ -156,11 +152,7 @@
             padding: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: var(--ombre-legere);
-<<<<<<< HEAD
             overflow: hidden;
-=======
-            /* LIGNE MANQUANTE : overflow: hidden; */
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
         }
 
         h2.titre-section {
@@ -229,11 +221,7 @@
 
         .btn-principal:hover {
             background-color: var(--orange-survol);
-<<<<<<< HEAD
             transform: translateY(-2px);
-=======
-            /* LIGNE MANQUANTE : transform: translateY(-2px); */
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
         }
 
         #btn-inverser {
@@ -247,11 +235,7 @@
 
         #btn-inverser:hover {
             background-color: #f4f4f4;
-<<<<<<< HEAD
             transform: translateY(-2px);
-=======
-            /* LIGNE MANQUANTE : transform: translateY(-2px); */
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
             transition: background-color 0.3s ease, transform 0.4s ease;
         }
 
@@ -271,15 +255,10 @@
             animation: fadeIn 0.5s ease;
         }
 
-<<<<<<< HEAD
         #affichage-resultat.chargement {
             animation: pulse 1.5s infinite ease-in-out;
         }
 
-=======
-        /* CLASSE ET ANIMATION MANQUANTES : .chargement et @keyframes pulse */
-        
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
         .conteneur-tableau {
             overflow-x: auto;
         }
@@ -367,7 +346,6 @@
             }
         }
 
-<<<<<<< HEAD
         @keyframes pulse {
             0%,
             100% {
@@ -378,9 +356,6 @@
                 opacity: 0.6;
             }
         }
-=======
-        /* @KEYFRAMES PULSE MANQUANT */
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
 
         @media (max-width: 600px) {
             header {
@@ -475,10 +450,6 @@
                         </tr>
                     </thead>
                     <tbody id="corps-tableau-taux">
-<<<<<<< HEAD
-                        <tr><td colspan="4">Les taux s'afficheront ici prochainement...</td></tr>
-=======
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
                     </tbody>
                 </table>
             </div>
@@ -495,7 +466,6 @@
             <p>Accord du BCT n°0233/2022</p>
         </div>
     </footer>
-<<<<<<< HEAD
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const API_URL = "https://api.frankfurter.app";
@@ -506,12 +476,25 @@
                 'DKK', 'PLN', 'THB', 'MYR'
             ];
             const MAP_NOM_PAYS = {
-                'EUR': 'EURO', 'USD': 'DOLLAR AMÉRICAIN', 'GBP': 'LIVRE STERLING',
-                'AUD': 'DOLLAR AUSTRALIEN', 'CAD': 'DOLLAR CANADIEN', 'CHF': 'FRANC SUISSE',
-                'CNY': 'RENMINDI', 'SGD': 'DOLLAR DE SINGAPOUR', 'NOK': 'COURONNE NORVEGIENNE',
-                'MXN': 'PESO MEXICAIN', 'INR': 'ROUPIE INDIEN', 'RUB': 'ROUBLE RUSSE',
-                'ZAR': 'RAND', 'TRY': 'LIVRE Turque', 'BRL': 'REAL BRÉSILIEN',
-                'DKK': 'COURONNE DANOISE', 'PLN': 'ZOLTY', 'THB': 'BAHT', 'MYR': 'RINGGIT',
+                'EUR': 'EURO',
+                'USD': 'DOLLAR AMÉRICAIN',
+                'GBP': 'LIVRE STERLING',
+                'AUD': 'DOLLAR AUSTRALIEN',
+                'CAD': 'DOLLAR CANADIEN',
+                'CHF': 'FRANC SUISSE',
+                'CNY': 'RENMINDI',
+                'SGD': 'DOLLAR DE SINGAPOUR',
+                'NOK': 'COURONNE NORVEGIENNE',
+                'MXN': 'PESO MEXICAIN',
+                'INR': 'ROUPIE INDIEN',
+                'RUB': 'ROUBLE RUSSE',
+                'ZAR': 'RAND',
+                'TRY': 'LIVRE Turque',
+                'BRL': 'REAL BRÉSILIEN',
+                'DKK': 'COURONNE DANOISE',
+                'PLN': 'ZOLTY',
+                'THB': 'BAHT',
+                'MYR': 'RINGGIT',
             };
 
             const formConversion = document.getElementById('form-conversion');
@@ -520,7 +503,10 @@
             const selectCible = document.getElementById('devise-cible');
             const btnInverser = document.getElementById('btn-inverser');
             const affichageResultat = document.getElementById('affichage-resultat');
+            const corpsTableauTaux = document.getElementById('corps-tableau-taux');
+            const titreTableauTaux = document.getElementById('titre-tableau-taux');
             const selecteurDeviseBase = document.getElementById('selecteur-devise-base');
+
 
             function remplirSelecteurs() {
                 const lastFrom = localStorage.getItem('lastFrom' || 'USD');
@@ -568,7 +554,7 @@
 
                 if (deviseSource === deviseCible) {
                     affichageResultat.textContent = `${montant.toFixed(2)} ${deviseSource} = ${montant.toFixed(2)} ${deviseCible}`;
-                    affichageResultat.classList.remove('chargement');
+                 affichageResultat.classList.remove('chargement');
                     return;
                 }
 
@@ -595,14 +581,71 @@
                 }
             }
 
-            // Initialisation
+            function gererInversion() {
+                const temp = selectSource.value;
+                selectSource.value = selectCible.value;
+                selectCible.value = temp;
+
+                selectSource.dispatchEvent(new Event('change'));
+            }
+
+            async function chargerEtAfficherTableau(deviseBase) {
+                titreTableauTaux.textContent = `Taux de Change (Base: ${deviseBase})`;
+                corpsTableauTaux.innerHTML = `<tr><td colspan="4">Chargement des taux...</td></tr>`;
+
+                const devisesCibles = DEVISES_COURANTES.filter(c => c !== deviseBase).join(',');
+
+                try {
+                    if (!devisesCibles) {
+                        corpsTableauTaux.innerHTML = `<tr><td colspan="4">Devise de base sélectionnée.</td></tr>`;
+                        return;
+                    }
+                    const reponse = await fetch(`${API_URL}/latest?from=${deviseBase}&to=${devisesCibles}`);
+                    if (!reponse.ok) throw new Error(`Erreur de réseau (Devise ${deviseBase} non supportée)`);
+
+                    const donnees = await reponse.json();
+                    const taux = donnees.rates;
+corpsTableauTaux.innerHTML = "";
+DEVISES_COURANTES.forEach(devise => {
+                        if (devise === deviseBase) return;
+                        const tauxInternational = taux[devise];
+                        if (!tauxInternational) return;
+
+                        const prixAchat = tauxInternational * (1 + SPREAD);
+                        const prixVente = tauxInternational * (1 - SPREAD);
+
+                        const nomPays = MAP_NOM_PAYS[devise] || devise;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><strong>${nomPays} (${devise})</strong></td>
+                            <td>${prixAchat.toFixed(4)}</td>
+                            <td>${tauxInternational.toFixed(4)}</td>
+                            <td>${prixVente.toFixed(4)}</td>
+                        `;
+                        corpsTableauTaux.appendChild(tr);
+                    });
+                } catch (erreur) {
+                    console.error("Erreur de tableau:", erreur);
+                    corpsTableauTaux.innerHTML = `<tr><td colspan="4">Erreur: ${erreur.message}</td></tr>`;
+                }
+            }
+
+
             remplirSelecteurs();
-            // Le tableau des taux et la fonction d'inversion seront ajoutés dans une prochaine version
-            
+            chargerEtAfficherTableau(selectSource.value);
+
             formConversion.addEventListener('submit', gererConversion);
+            btnInverser.addEventListener('click', gererInversion);
+selectSource.addEventListener('change', () => {
+                const nouvelleBase = selectSource.value;
+                selecteurDeviseBase.value = nouvelleBase;
+                chargerEtAfficherTableau(nouvelleBase);
+            }); selecteurDeviseBase.addEventListener('change', () => {
+                const nouvelleBase = selecteurDeviseBase.value;
+                selectSource.value = nouvelleBase;
+selectSource.dispatchEvent(new Event('change'));
+            });
         });
     </script>
 </body>
-=======
->>>>>>> 51625cbc933ea4ab04fbec39d662b7d1e724485b
 </html>
